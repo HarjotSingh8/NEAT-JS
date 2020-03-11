@@ -80,3 +80,7 @@ function activationFunctionSigmoid(d) {
   d = 1 / d;
   return d;
 }
+
+function activationFunctionTan(d) {
+  return Math.tanh(d);
+}
