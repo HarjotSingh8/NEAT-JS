@@ -73,7 +73,7 @@ class ML {
   constructor(species) {}
 }
 
-function activationFunction(d) {
+function activationFunctionSigmoid(d) {
   //sigmoid function -> Output is between 0 & 1
   d = Math.pow(Math.E, -d);
   d++;
