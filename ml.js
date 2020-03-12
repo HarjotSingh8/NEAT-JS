@@ -21,22 +21,23 @@ class Connection {
   }
   copy() {
     //copy this connection
+    let ret = new Connection(this.source, this.node, this.innovationNumber);
   }
 }
 
-let v;
+let testSp;
 function testSpecies() {
-  v = new Species(5, 3);
-  v.mutateAddConnection();
-  v.mutateAddConnection();
-  v.mutateAddConnection();
-  v.mutateAddConnection();
-  v.mutateAddConnection();
-  v.mutateAddNode();
-  v.mutateAddNode();
-  v.mutateAddNode();
-  v.mutateAddNode();
-  return v;
+  testSp = new Species(5, 3);
+  testSp.mutateAddConnection();
+  testSp.mutateAddConnection();
+  testSp.mutateAddConnection();
+  testSp.mutateAddConnection();
+  testSp.mutateAddConnection();
+  testSp.mutateAddNode();
+  testSp.mutateAddNode();
+  testSp.mutateAddNode();
+  testSp.mutateAddNode();
+  return testSp;
 }
 class Species {
   constructor(numInputs, numOutputs) {
@@ -81,6 +82,7 @@ class Species {
     //Complete
     //Not Tested
     let tries = 20;
+    let newConnection = null;
     while (tries > 1) {
       let randomSourceNodeIndex = parseInt(random(0, this.numGenes - 1));
       while (this.genes[randomSourceNodeIndex].depth < 1) {
@@ -109,7 +111,7 @@ class Species {
         )
       ) {
         //add new connection here
-        let newConnection = new Connection(
+        newConnection = new Connection(
           this.genes[randomSourceNodeIndex],
           this.genes[randomNodeIndex],
           this.numConnections
@@ -120,6 +122,7 @@ class Species {
       }
       tries--;
     }
+    return newConnection;
   }
   checkConnection(source, node) {
     //Complete
@@ -133,10 +136,15 @@ class Species {
     }
     return false;
   }
+  updateSpecies() {
+    //replace default species parameters to the best one in the species
+  }
   mutateAddNode() {
     //new connection here
     //Complete
     //Not Tested
+    let ret = []; //this will be returned
+    //ret contains the new node, and both connections
     let randomConnectionIndex = parseInt(random(0, this.numConnections - 1));
     while (!this.connections[randomConnectionIndex].enabled) {
       randomConnectionIndex = parseInt(random(0, this.numConnections - 1));
@@ -174,20 +182,46 @@ class Species {
   }
 }
 
+let testOrg;
+function testOrganism() {
+  testSpecies();
+  testOrg = new Organism(testSp);
+}
 class Organism {
   constructor(species) {
     this.species = species;
-    this.mutationTrees = [];
+    this.genes = [];
+    this.connections = [];
+    this.evaluateOrder = [];
     this.fitness = 0;
-    initOrganism();
+    //let initConnections = random(1, this.species.numConnections / 2);
+    let initNodes = random(1, this.species.numGenes / 2);
+    if (random() > 0.5) {
+      //add new mutations
+      //delete some nodes
+      this.mutateAddConnection();
+    } else {
+      //just crossover
+    }
+    /**
+     * organism should have it's own genes, connections
+     * genes and connections can be copied from parent
+     */
+    //initOrganism();
+  }
+  mutateAddConnection() {
+    let connection = this.species.mutateAddConnection;
+    if (connection != null) {
+      this.connections.push(connection);
+      //add the connections to this tree
+    }
   }
   initOrganism() {
     //initialise organism here
   }
-}
-
-class ML {
-  constructor(species) {}
+  reEvaluateOrder() {
+    //re-evaluate the order of calculation here
+  }
 }
 
 function activationFunctionSigmoid(d) {
