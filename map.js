@@ -85,6 +85,11 @@ class Map {
     }
     img.updatePixels();
   }
+  inWater(pos) {
+    if (this.height[Math.round(pos.x)][Math.round(pos.y)] < 95) {
+      return true;
+    } else return false;
+  }
 }
 
 function newMap() {
@@ -217,3 +222,5 @@ function updateZoom() {
     highresMap.update();
   }, 100);
 }
+
+function terrainType(location) {}

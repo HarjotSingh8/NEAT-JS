@@ -1,3 +1,9 @@
+let humans = [];
+function drawCreatures() {
+  for (let i = 0; i < humans.length; i++) {
+    humans[i].update();
+  }
+}
 class Life {
   constructor() {
     /*
@@ -21,11 +27,55 @@ class Life {
      * this.seaCreature
      */
   }
+  update() {
+    this.checkWater();
+    this.regenStamina(0.5);
+    this.draw();
+  }
+  draw() {
+    //draw the organism here
+    fill(this.r, this.g, this.b);
+    ellipse(this.pos.x, this.pos.y, 1, 1);
+    stroke(255);
+    line(this.pos.x, this.pos.y, this.pos.x + this.stamina, this.pos.y);
+  }
+  debugInfo() {
+    //show debug info here
+  }
   movement() {
     //movement handled here
   }
   checkWater() {
     //checking if it'll stay alive in (or in cases of fishes outside) water
+    if (worldMap.inWater(this.pos)) {
+      if (!this.seaCreature) {
+        this.reduceStamina(1);
+      }
+    }
+  }
+  checkStaminaAvailability() {
+    if (this.staminaRegenCooldownFlag) return false;
+    if (this.stamina < 0) {
+      this.stamina = 0;
+      this.staminaRegenCooldownFlag = true;
+      this.staminaRegenCooldownCounter = 60;
+      return false;
+    }
+    return true;
+  }
+  reduceStamina(val) {
+    if (this.checkStaminaAvailability()) {
+      this.stamina -= val;
+    }
+  }
+  regenStamina(val) {
+    if (this.stamina < this.maxStamina && this.staminaRegenCooldownCounter < 0)
+      this.stamina += val;
+    if (this.staminaRegenCooldownFlag) {
+      if (this.stamina > this.maxStamina / 4)
+        this.staminaRegenCooldownFlag = false;
+      else this.staminaRegenCooldownCounter--;
+    }
   }
   checkLife() {
     //kill if Food, Water, Health is finished
@@ -40,19 +90,27 @@ class Life {
 
 class Human extends Life {
   constructor() {
+    super();
     this.type = "Human";
+    this.r = 0;
+    this.g = 255;
+    this.b = 0;
+    this.pos = createVector(random(0, canvasW), random(0, canvasH));
     this.score = 0;
     this.perception = 10;
     this.strength = random(50, 100);
     this.maxHealth = random(75, 100);
+    this.staminaRegenCooldownFlag = false;
+    this.staminaRegenCoolDownCounter = 60;
     if (random() > 0.5) {
-      this.gender = male;
+      this.gender = "male";
     } else {
-      this.gender = female;
+      this.gender = "female";
     }
     this.maxFood = random(75, 100);
     this.maxWater = random(75, 100);
     this.maxStamina = random(75, 100);
+    this.stamina = this.maxStamina;
     if (random() > 0.25) {
       this.swimmable = true;
     } else {
@@ -143,5 +201,11 @@ class FishSmall extends Life {
     this.runSpeed = random(40, 60);
     this.foodType = ["Vegetation"];
     this.seaCreature = true;
+  }
+}
+
+function initialSpawning() {
+  for (let i = 0; i < 100; i++) {
+    humans.push(new Human());
   }
 }

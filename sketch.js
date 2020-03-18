@@ -9,6 +9,8 @@ let detail = 2;
 let highResImg;
 let highresMap;
 function setup() {
+  canvasW = windowWidth;
+  canvasH = windowHeight;
   width = windowWidth;
   //width = windowHeight;
   height = windowHeight;
@@ -30,6 +32,7 @@ function setup() {
   worldMap = new Map();
   highResImg = createImage(width, height);
   highresMap = new HighResMap();
+  initialSpawning();
 }
 
 function draw() {
@@ -59,5 +62,6 @@ function draw() {
     0,
     (height * mapZoom) / detail - windowHeight
   );*/
+  drawCreatures();
   ellipse(mouseX, mouseY, 10, 10);
 }
