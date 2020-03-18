@@ -36,6 +36,7 @@ function setup() {
 }
 
 function draw() {
+  //console.log(humans[0].stamina);
   background("rgb(50,50,100)");
   image(
     img,
@@ -64,4 +65,23 @@ function draw() {
   );*/
   drawCreatures();
   ellipse(mouseX, mouseY, 10, 10);
+  showDebug();
+}
+
+function showDebug() {
+  let closestDist = Infinity;
+  let closest;
+  let x;
+  for (let i = 0; i < humans.length; i++) {
+    x = distPts(mouseX, mouseY, humans[i].pos.x, humans[i].pos.y);
+    if (x < closestDist) {
+      closestDist = x;
+      closest = humans[i];
+    }
+  }
+  closest.debugInfo();
+}
+
+function distPts(x1, y1, x2, y2) {
+  return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
 }

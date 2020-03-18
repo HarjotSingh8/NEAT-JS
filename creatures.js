@@ -28,28 +28,37 @@ class Life {
      */
   }
   update() {
-    this.checkWater();
-    this.regenStamina(0.5);
+    this.checkSwimming();
+    this.regenStamina(0.25);
+    this.reduceFood(0.01);
+    //this.checkWaterAvailibility();
+    //this.checkFoodAvailability();
     this.draw();
   }
   draw() {
     //draw the organism here
     fill(this.r, this.g, this.b);
-    ellipse(this.pos.x, this.pos.y, 1, 1);
-    stroke(255);
-    line(this.pos.x, this.pos.y, this.pos.x + this.stamina, this.pos.y);
+    ellipse(this.pos.x, this.pos.y, 2, 2);
   }
   debugInfo() {
     //show debug info here
+    stroke(255);
+    line(this.pos.x, this.pos.y, this.pos.x + this.stamina, this.pos.y);
+    line(this.pos.x, this.pos.y, this.pos.x, this.pos.y + this.food);
+    noStroke();
   }
   movement() {
     //movement handled here
   }
-  checkWater() {
+  checkFoodAvailability() {}
+  reduceFood(val) {
+    this.food -= val;
+  }
+  checkSwimming() {
     //checking if it'll stay alive in (or in cases of fishes outside) water
     if (worldMap.inWater(this.pos)) {
       if (!this.seaCreature) {
-        this.reduceStamina(1);
+        this.reduceStamina(0.3);
       }
     }
   }
@@ -66,14 +75,16 @@ class Life {
   reduceStamina(val) {
     if (this.checkStaminaAvailability()) {
       this.stamina -= val;
+      this.reduceFood(0.001 * val);
     }
   }
   regenStamina(val) {
-    if (this.stamina < this.maxStamina && this.staminaRegenCooldownCounter < 0)
+    if (this.stamina < this.maxStamina && !this.staminaRegenCooldownFlag)
       this.stamina += val;
     if (this.staminaRegenCooldownFlag) {
       if (this.stamina > this.maxStamina / 4)
         this.staminaRegenCooldownFlag = false;
+      if (this.staminaRegenCooldownCounter < 0) this.stamina += val;
       else this.staminaRegenCooldownCounter--;
     }
   }
@@ -108,7 +119,9 @@ class Human extends Life {
       this.gender = "female";
     }
     this.maxFood = random(75, 100);
+    this.food = this.maxFood;
     this.maxWater = random(75, 100);
+    this.water = this.maxWater;
     this.maxStamina = random(75, 100);
     this.stamina = this.maxStamina;
     if (random() > 0.25) {
