@@ -53,6 +53,10 @@ class Life {
   checkFoodAvailability() {}
   reduceFood(val) {
     this.food -= val;
+    if (this.food < 0) {
+      //dead
+      this.food = 0;
+    }
   }
   checkSwimming() {
     //checking if it'll stay alive in (or in cases of fishes outside) water
@@ -75,7 +79,7 @@ class Life {
   reduceStamina(val) {
     if (this.checkStaminaAvailability()) {
       this.stamina -= val;
-      this.reduceFood(0.001 * val);
+      this.reduceFood(0.01 * val);
     }
   }
   regenStamina(val) {
