@@ -7,6 +7,7 @@ function drawCreatures() {
 class Life {
   constructor() {
     /*
+     * every organism must have these properties
      * this.strength
      * this.maxHealth
      * this.currentHealth

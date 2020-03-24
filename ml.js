@@ -7,24 +7,6 @@ class Node {
   }
 }
 
-class Connection {
-  constructor(source, node, innovationNumber) {
-    this.innovationNumber = innovationNumber;
-    this.source = source;
-    this.node = node;
-    this.weight = random();
-    this.bias = random();
-    this.enabled = true;
-  }
-  mutate() {
-    //change weights and biases
-  }
-  copy() {
-    //copy this connection
-    let ret = new Connection(this.source, this.node, this.innovationNumber);
-  }
-}
-
 let testSp;
 function testSpecies() {
   testSp = new Species(5, 3);
@@ -43,25 +25,27 @@ class Species {
   constructor(numInputs, numOutputs) {
     this.numInputs = numInputs;
     this.inputs = [];
+    this.numOutputs = numOutputs;
+    this.outputs = [];
+    this.genes = [];
+    this.numConnections = 0; //aka innovation number
+    this.connections = [];
+    this.maxDepth = 2;
+    this.numGenes = this.numInputs + this.numOutputs;
+
+    //initialising basic structure
     for (let i = 0; i < this.numInputs; i++) {
       this.inputs.push(new Node(i, 0, "input"));
     }
-    this.numOutputs = numOutputs;
-    this.outputs = [];
     for (let i = 0; i < this.numOutputs; i++) {
       this.outputs.push(new Node(numInputs + i, 1, "output"));
     }
-    this.genes = [];
     for (let i = 0; i < this.numInputs; i++) {
       this.genes.push(this.inputs[i]);
     }
     for (let i = 0; i < this.numOutputs; i++) {
       this.genes.push(this.outputs[i]);
     }
-    this.numGenes = this.numInputs + this.numOutputs;
-    this.numConnections = 0; //aka innovation number
-    this.connections = [];
-    this.maxDepth = 1;
   }
   mutate() {
     //mutation here
@@ -75,7 +59,7 @@ class Species {
         this.genes[i].depth++;
       }
     }
-    this.maxDepth = this.genes[this.numInputs].depth;
+    this.maxDepth = this.genes[this.numInputs].depth; //the inputs end at index (this.numInputs-1), at index this.numInputs is the first output, outmut has the max depth
   }
   mutateAddConnection() {
     //add a connection between unconnected nodes
@@ -143,7 +127,7 @@ class Species {
     //new connection here
     //Complete
     //Not Tested
-    let ret = []; //this will be returned
+    let ret = []; //this will be returned if needed
     //ret contains the new node, and both connections
     let randomConnectionIndex = parseInt(random(0, this.numConnections - 1));
     while (!this.connections[randomConnectionIndex].enabled) {
