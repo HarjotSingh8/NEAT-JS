@@ -1,12 +1,3 @@
-class Node {
-  constructor(id, depth, type) {
-    this.id = id;
-    this.depth = depth;
-    this.type = type;
-    this.value = 0;
-  }
-}
-
 let testSp;
 function testSpecies() {
   testSp = new Species(5, 3);
