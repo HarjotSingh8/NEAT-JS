@@ -92,41 +92,6 @@ class Map {
   }
 }
 
-function newMap() {
-  worldMap = new Map();
-}
-
-function keyPressed() {
-  if (keyCode === UP_ARROW) {
-    mapMove.y += 1;
-  }
-  if (keyCode === DOWN_ARROW) {
-    mapMove.y -= 1;
-  }
-  if (keyCode === LEFT_ARROW) {
-    mapMove.x = 1;
-  }
-  if (keyCode === RIGHT_ARROW) {
-    mapMove.x = -1;
-  }
-  if (key === "a") {
-    mapZoom *= 2;
-    updateZoom(function() {
-      highresMap.update();
-    }, 100);
-  }
-  if (key === "z") {
-    mapZoom /= 2;
-    updateZoom();
-  }
-}
-function keyReleased() {
-  if (keyCode === LEFT_ARROW) {
-    mapMove.x = 0;
-  } else if (keyCode === RIGHT_ARROW) {
-    mapMove.x = 0;
-  }
-}
 class HighResMap {
   constructor() {
     this.offset = createVector(0, 0);
@@ -224,3 +189,44 @@ function updateZoom() {
 }
 
 function terrainType(location) {}
+function keyReleased() {
+  if (keyCode === LEFT_ARROW) {
+    mapMove.x = 0;
+  } else if (keyCode === RIGHT_ARROW) {
+    mapMove.x = 0;
+  }
+}
+
+function newMap() {
+  //worldMap = new Map();
+  var newWorker = new Worker("newMap.js");
+}
+
+async function newM() {
+  worldMap = new Map();
+}
+
+function keyPressed() {
+  if (keyCode === UP_ARROW) {
+    mapMove.y += 1;
+  }
+  if (keyCode === DOWN_ARROW) {
+    mapMove.y -= 1;
+  }
+  if (keyCode === LEFT_ARROW) {
+    mapMove.x = 1;
+  }
+  if (keyCode === RIGHT_ARROW) {
+    mapMove.x = -1;
+  }
+  if (key === "a") {
+    mapZoom *= 2;
+    updateZoom(function() {
+      highresMap.update();
+    }, 100);
+  }
+  if (key === "z") {
+    mapZoom /= 2;
+    updateZoom();
+  }
+}

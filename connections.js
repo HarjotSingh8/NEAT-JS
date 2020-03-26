@@ -9,16 +9,16 @@ class Connection {
     this.enabled = true;
     this.innovationNumber = innovationNumber;
   }
-  getInNode() {
+  getInNodeId() {
     return this.inNodeId;
   }
-  setInNode(nodeId) {
+  setInNodeId(nodeId) {
     this.inNodeId = nodeId;
   }
-  getOutNode() {
+  getOutNodeId() {
     return this.outNodeId;
   }
-  setOutNode(nodeId) {
+  setOutNodeId(nodeId) {
     this.outNodeId = nodeId;
   }
   getWeight() {

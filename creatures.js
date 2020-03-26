@@ -1,4 +1,5 @@
 let humans = [];
+let humanML = null;
 function drawCreatures() {
   for (let i = 0; i < humans.length; i++) {
     humans[i].update();
@@ -32,6 +33,7 @@ class Life {
     this.checkSwimming();
     this.regenStamina(0.25);
     this.reduceFood(0.01);
+    this.movement();
     //this.checkWaterAvailibility();
     //this.checkFoodAvailability();
     this.draw();
@@ -50,6 +52,31 @@ class Life {
   }
   movement() {
     //movement handled here
+    let arr = [];
+    for (let i = 0; i < 200; i++) {
+      arr.push(random(0, 2));
+    }
+    //arr.push(1);
+    var output = this.ml.think(arr);
+    //console.log(output);
+    this.pos.x -= output[0];
+    this.pos.y -= output[1];
+    this.pos.x += output[2];
+    this.pos.y += output[3];
+    if (this.pos.x < 10) {
+      this.pos.x = 10;
+      //decreaseFitness();
+    }
+    if (this.pos.x > canvasW - 10) {
+      this.pos.x = canvasW - 10;
+    }
+    if (this.pos.y < 10) {
+      this.pos.y = 10;
+      //decreaseFitness();
+    }
+    if (this.pos.y > canvasH - 10) {
+      this.pos.y = canvasH - 10;
+    }
   }
   checkFoodAvailability() {}
   reduceFood(val) {
@@ -223,7 +250,12 @@ class FishSmall extends Life {
 }
 
 function initialSpawning() {
+  /**
+   * inputs -> posx,posy,
+   */
+  humanML = new Species(200, 5, 100);
   for (let i = 0; i < 100; i++) {
     humans.push(new Human());
+    humans[i].ml = humanML.ml[i];
   }
 }

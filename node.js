@@ -1,5 +1,5 @@
 class Node {
-  constructor(id, depth, type) {
+  constructor(id, type, depth) {
     this.id = id;
     this.depth = depth;
     this.type = type;
@@ -24,13 +24,13 @@ class Node {
     return true;
   }
   getValue() {
-    if (value != null) {
+    if (this.value != null) {
       return this.value;
     }
     return -1;
   }
   setValue(val) {
-    this.val = val;
+    this.value = val;
   }
   getDepth() {
     return this.depth;

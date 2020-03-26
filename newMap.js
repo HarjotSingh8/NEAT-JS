@@ -1,0 +1,1 @@
+worldMap = new Map();

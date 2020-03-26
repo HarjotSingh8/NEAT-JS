@@ -15,7 +15,7 @@ function setup() {
   //width = windowHeight;
   height = windowHeight;
   createCanvas(windowWidth, windowHeight);
-  frameRate(60);
+  frameRate(30);
   noStroke();
   mapOffset = createVector(0, 0);
   mapMove = createVector(0, 0);
@@ -66,6 +66,8 @@ function draw() {
   drawCreatures();
   ellipse(mouseX, mouseY, 10, 10);
   showDebug();
+  //console.log(humans);
+  //noLoop();
 }
 
 function showDebug() {
@@ -80,8 +82,13 @@ function showDebug() {
     }
   }
   closest.debugInfo();
+  return closest;
 }
 
+function mouseClicked() {
+  var human = showDebug();
+  console.log(human);
+}
 function distPts(x1, y1, x2, y2) {
   return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
 }
